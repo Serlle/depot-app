@@ -8,6 +8,9 @@
   </h1>
 
   <p class="font-bold mb-6">Date and Time: <%= Time.now.strftime("%Y-%m-%d %H:%M:%S") %></p>
+  <% if @visits && @visits > 5 %>
+    <p class="font-bold mb-6"><%= pluralize(@visits, "Visit") %></p>
+  <% end %>
 
   <ul>
     <% cache @products do %>
