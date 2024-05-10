@@ -4,18 +4,25 @@
   <table class="table-auto">
     <% cart.line_items.each do|line_item| %>
       <tr>
-        <td class="text-right"><%= line_item.quantity %></td>
+        <td class="text-right"><%= line_item.quantity %></td>      
+ 
         <td>&times;</td>
+  
         <td class="pr-2">
           <%= line_item.product.title %>
         </td>
+
         <td class="text-rigth font-bold">
           <%= number_to_currency(line_item.total_price) %>
+        </td>
+
+        <td class=""> 
+          <%= button_to "Remove item", line_item, method: :delete, 
+            class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
         </td>
       </tr>
     <% end %>
   
-
     <tfoot>
       <tr>
         <th class="text-right pr-2 pt-2" colspan="3">Total:</th>
@@ -27,5 +34,5 @@
   </table>
 
   <%= button_to "Empty Cart", cart, method: :delete, 
-  class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
+    class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
 </div>
