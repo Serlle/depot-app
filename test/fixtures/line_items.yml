@@ -3,7 +3,8 @@
 one:
   product: two
   cart: one
-
+  price_product: 24.95
 two:
   product: two
   cart: two
+  price_product: 19.95

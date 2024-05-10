@@ -5,8 +5,12 @@ class Cart < ApplicationRecord
     current_line_item = line_items.find_by(product_id: product.id)
     if current_line_item
       current_line_item.quantity += 1
+      current_line_item.price_product ||= product.price
     else
-      current_line_item = line_items.build(product_id: product.id)
+      current_line_item = line_items.build(
+        product_id: product.id, 
+        price_product: product.price
+      )
     end
     current_line_item
   end
