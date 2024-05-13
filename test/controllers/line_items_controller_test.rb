@@ -46,6 +46,19 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
       delete line_item_url(@line_item)
     end
 
-    assert_redirected_to line_items_url
+    assert_redirected_to cart_url
+  end
+
+  test "should remove one line_item" do
+    @line_item.update(quantity: 2)
+
+    assert_difference('LineItem.count', 0) do
+      delete line_item_url(@line_item)
+    end
+    
+    @line_item.reload
+
+    assert_equal 1, @line_item.quantity
+    assert_redirected_to cart_url(@line_item.cart)
   end
 end
