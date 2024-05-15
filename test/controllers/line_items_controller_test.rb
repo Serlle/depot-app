@@ -26,6 +26,16 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'td', "Programing Ruby 1.9"
   end
 
+  test "should create line_item via turbo-stream" do
+    assert_difference("LineItem.count") do
+      post line_items_url, params: { product_id: products(:ruby).id },
+      as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match /<tr class="line-item-highlight">/, @response.body
+  end
+
   test "should show line_item" do
     get line_item_url(@line_item)
     assert_response :success
@@ -50,7 +60,7 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should remove one line_item" do
-    @line_item.update(quantity: 2)
+    @line_item.update(quantity: 3)
 
     assert_difference('LineItem.count', 0) do
       delete line_item_url(@line_item)
@@ -58,7 +68,7 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     
     @line_item.reload
 
-    assert_equal 1, @line_item.quantity
+    assert_equal 2, @line_item.quantity
     assert_redirected_to store_index_url
   end
 end

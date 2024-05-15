@@ -31,7 +31,7 @@ class LineItemsController < ApplicationController
       if @line_item.save
         session[:counter] = 0
         
-        format.turbo_stream
+        format.turbo_stream { @current_item = @line_item }
         format.html { redirect_to store_index_url }
         format.json { render :show, status: :created, location: @line_item }
       else
@@ -57,7 +57,7 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
     if @line_item.quantity > 1
-      @line_item.quantity = 1 
+      @line_item.quantity -= 1 
       @line_item.save
     else  
       @line_item.destroy
