@@ -31,6 +31,7 @@ class LineItemsController < ApplicationController
       if @line_item.save
         session[:counter] = 0
         
+        format.turbo_stream
         format.html { redirect_to store_index_url }
         format.json { render :show, status: :created, location: @line_item }
       else
@@ -63,7 +64,7 @@ class LineItemsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to cart_url(@line_item.cart), notice: "Line item was successfully deleted." }
+      format.html { redirect_to store_index_url, notice: "Line item was successfully deleted." }
       format.json { head :no_content }
     end
   end

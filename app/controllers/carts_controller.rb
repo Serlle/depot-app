@@ -9,7 +9,6 @@ class CartsController < ApplicationController
 
   # GET /carts/1 or /carts/1.json
   def show
-    destroy if @cart.line_items.empty?
   end
 
   # GET /carts/new
