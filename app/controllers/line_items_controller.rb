@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart
-  before_action :set_cart, only: %i[ create ]
+  before_action :set_cart, only: %i[ create destroy ]
   before_action :set_line_item, only: %i[ show edit update destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_line_item
 
@@ -29,7 +29,7 @@ class LineItemsController < ApplicationController
     
     respond_to do |format|
       if @line_item.save
-        session[:counter] = 0
+        session[:counter] = nil
         
         format.turbo_stream { @current_item = @line_item }
         format.html { redirect_to store_index_url }
@@ -62,8 +62,10 @@ class LineItemsController < ApplicationController
     else  
       @line_item.destroy
     end
+    session[:counter] = nil
 
     respond_to do |format|
+      format.turbo_stream { @current_item = @line_item }
       format.html { redirect_to store_index_url, notice: "Line item was successfully deleted." }
       format.json { head :no_content }
     end

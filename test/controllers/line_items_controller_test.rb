@@ -26,7 +26,17 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'td', "Programing Ruby 1.9"
   end
 
-  test "should create line_item via turbo-stream" do
+  test "should create line_item via 'Add to Cart' button via turbo-stream" do
+    assert_difference("LineItem.count") do
+      post line_items_url, params: { product_id: products(:ruby).id },
+      as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match /<tr class="line-item-highlight">/, @response.body
+  end
+
+  test "should create line_item via image click via turbo-stream" do
     assert_difference("LineItem.count") do
       post line_items_url, params: { product_id: products(:ruby).id },
       as: :turbo_stream
@@ -59,6 +69,17 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to store_index_url
   end
 
+  test "should destroy line_item and hide visit via turbo-stream" do
+    assert_difference("LineItem.count", -1) do
+      delete line_item_url(@line_item),
+      as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match /<div id="cart">/, @response.body
+    assert_match /<div id="visit">/, @response.body
+  end
+
   test "should remove one line_item" do
     @line_item.update(quantity: 3)
 
@@ -70,5 +91,22 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 2, @line_item.quantity
     assert_redirected_to store_index_url
+  end
+
+  test "should remove one line_item and hide visit via turbo-stream" do
+    @line_item.update(quantity: 3)
+
+    assert_difference('LineItem.count', 0) do
+      delete line_item_url(@line_item),
+      as: :turbo_stream
+    end
+    
+    @line_item.reload
+
+    assert_response :success
+    assert_equal 2, @line_item.quantity
+    assert_match /<div id="line_item">/, @response.body
+    assert_match /<tr class="line-item-highlight">/, @response.body
+    assert_match /<div id="visit">/, @response.body
   end
 end

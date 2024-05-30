@@ -1,0 +1,5 @@
+<% if @visit && @visit > 5 %>
+  <p id="visit" class="font-bold mb-6"><%= pluralize(@visit, "Visit") %></p>
+<% else %>
+  <div id="visit"></div>
+<% end %>

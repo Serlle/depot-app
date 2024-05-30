@@ -48,4 +48,21 @@ class CartsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to store_index_url
   end
+
+  test "should get index products, hide cart and hide visit via turbo-stream when the cart is emptied" do
+    post line_items_url, params: { product_id: products(:ruby).id }
+    @cart = Cart.find(session[:cart_id])
+
+    assert_difference("Cart.count", -1) do
+      delete cart_url(@cart),
+      as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match '<div id="cart"></div>', @response.body
+    assert_match '<div id="visit"></div>', @response.body
+    products.each do |product|
+      assert_match product.title, @response.body
+    end
+  end
 end
