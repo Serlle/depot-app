@@ -6,15 +6,15 @@ class StoreController < ApplicationController
     @products = Product.order(:title)
   end
 
-  private
+private
 
   def set_visits
     if session[:counter].nil?
-      session[:counter] = 0
+      session[:counter] = 1
     else
       session[:counter] += 1
     end
 
-    @visits = session[:counter]
+    @visit = session[:counter]
   end
 end

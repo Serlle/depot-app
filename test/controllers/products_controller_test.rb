@@ -58,6 +58,16 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to product_url(@product)
   end
 
+  test "should update product via turbo-stream broadcast-action-cable" do
+    patch product_url(@product), params: { 
+      product: { 
+        title: "Updated Tittle"
+      }
+    }, as: :turbo_stream
+    
+    assert_match /<li class="flex mb-6 product-highlight"/, @response.body
+  end
+
   test "can't delete product in cart" do
     assert_difference("Product.count", 0) do
       delete product_url(products(:two))
