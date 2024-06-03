@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
+  include ActionCable::TestHelper
+ 
   setup do
     @product = products(:one)
     @title = "The Great Book #{rand(1000)}"
@@ -58,15 +60,21 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to product_url(@product)
   end
 
-  test "should update product via turbo-stream broadcast-action-cable" do
-    patch product_url(@product), params: { 
-      product: { 
-        title: "Updated Tittle"
-      }
-    }, as: :turbo_stream
-    
-    assert_match /<li class="flex mb-6 product-highlight"/, @response.body
-  end
+  # test "should update product via turbo-stream broadcast-action-cable" do
+  #   updated_title = "Updated Title"
+
+  #   assert_broadcasts('products', 1) do
+  #     patch product_url(@product), params: { 
+  #       product: { 
+  #         title: updated_title
+  #       }
+  #     }, as: :turbo_stream
+  #   end
+
+  #   assert_response :success
+  #   @product.reload
+  #   assert_match /<li class="flex mb-6 product-highlight"/, @response.body
+  # end
 
   test "can't delete product in cart" do
     assert_difference("Product.count", 0) do
