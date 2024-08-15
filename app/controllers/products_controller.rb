@@ -2,6 +2,17 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
 
+  # Atom Feed readers that exist and have our app export all the oreders
+  def who_bought
+    @product = Product.find(params[:id])
+    @latest_order = @product.orders.order(:updated_at).last
+    if stale?(@latest_order)
+      respond_to do |format|
+        format.atom
+      end
+    end
+  end
+
   # GET /products or /products.json
   def index
     @products = Product.all
@@ -63,18 +74,19 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def product_params
-      params.require(:product).permit(:title, :description, :image_url, :price)
-    end
+  # Only allow a list of trusted parameters through.
+  def product_params
+    params.require(:product).permit(:title, :description, :image_url, :price)
+  end
 
-    def invalid_product
-      logger.error "Attempt to access invalid product #{params[:id]}"
-      redirect_to store_index_url, notice: 'Invalid product'
-    end
+  def invalid_product
+    logger.error "Attempt to access invalid product #{params[:id]}"
+    redirect_to store_index_url, notice: 'Invalid product'
+  end
 end
+
