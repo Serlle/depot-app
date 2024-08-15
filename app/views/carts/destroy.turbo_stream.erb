@@ -9,3 +9,7 @@
 <%= turbo_stream.replace 'visit' do %>
   <%= render partial: 'layouts/visit', locals: { visit: @visit }%>
 <% end %>
+
+<%= turbo_stream.replace 'notice' do %>
+  <%= render partial: 'store/notice', locals: {notice: @notice }%>
+<% end %>

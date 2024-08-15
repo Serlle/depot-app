@@ -2,12 +2,12 @@
 
 one:
   name: Dave Thomas
-  address: MyText
-  email: dave@ecample.org
+  address: Street of example 123
+  email: dave@example.org
   pay_type: Check
 
 two:
-  name: MyString
+  name: Jonh Connor
   address: MyText
-  email: MyString
-  pay_type: 1
+  email: free@example.com
+  pay_type: Purchase order

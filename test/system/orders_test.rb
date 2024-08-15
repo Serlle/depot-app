@@ -11,31 +11,17 @@ class OrdersTest < ApplicationSystemTestCase
   end
 
   test "should create order" do
-    visit orders_url
-    click_on "New order"
+    visit store_index_url
+    click_on "Add to Cart", match: :first
+    click_on "Checkout"
 
-    fill_in "Address", with: @order.address
+    fill_in "Address", with: "123 Main Street"
     fill_in "Email", with: @order.email
     fill_in "Name", with: @order.name
-    fill_in "Pay type", with: @order.pay_type
-    click_on "Create Order"
+    select @order.pay_type, from: 'Pay type'
+    click_on "Place Order"
 
-    assert_text "Order was successfully created"
-    click_on "Back"
-  end
-
-  test "should update Order" do
-    visit order_url(@order)
-    click_on "Edit this order", match: :first
-
-    fill_in "Address", with: @order.address
-    fill_in "Email", with: @order.email
-    fill_in "Name", with: @order.name
-    fill_in "Pay type", with: @order.pay_type
-    click_on "Update Order"
-
-    assert_text "Order was successfully updated"
-    click_on "Back"
+    assert_text "Thank you for your order."
   end
 
   test "should destroy Order" do

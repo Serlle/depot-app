@@ -18,6 +18,8 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
 
   test "should get new" do
     post line_items_url, params: { product_id: products(:ruby).id }
+    follow_redirect!
+    
     get new_order_url
     assert_response :success
   end
@@ -43,7 +45,14 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update order" do
-    patch order_url(@order), params: { order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type } }
+    patch order_url(@order), params: { 
+      order: { 
+        address: @order.address, 
+        email: @order.email, 
+        name: @order.name, 
+        pay_type: @order.pay_type 
+      } 
+    }
     assert_redirected_to order_url(@order)
   end
 

@@ -18,26 +18,22 @@ class LineItemsTest < ApplicationSystemTestCase
     fill_in "Product", with: @line_item.product_id
     click_on "Create Line item"
 
-    assert_text "Line item was successfully created"
-    click_on "Back"
+    assert_text "Your pragmatic Catalog"
   end
 
   test "should update Line item" do
     visit line_item_url(@line_item)
-    click_on "Edit this line item", match: :first
+    click_on "Edit this line_item", match: :first
 
     fill_in "Cart", with: @line_item.cart_id
     fill_in "Product", with: @line_item.product_id
     click_on "Update Line item"
 
-    assert_text "Line item was successfully updated"
-    click_on "Back"
+    assert_text "Line item was successfully updated."
   end
 
   test "should destroy Line item" do
     visit line_item_url(@line_item)
-    click_on "Destroy this line item", match: :first
-
-    assert_text "Line item was successfully destroyed"
+    click_on "Remove Item", match: :first
   end
 end

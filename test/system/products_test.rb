@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class ProductsTest < ApplicationSystemTestCase
   setup do
-    @product = products(:one)
+    @product = products(:ruby)
   end
 
   test "visiting the index" do
@@ -17,11 +17,11 @@ class ProductsTest < ApplicationSystemTestCase
     fill_in "Description", with: @product.description
     fill_in "Image url", with: @product.image_url
     fill_in "Price", with: @product.price
-    fill_in "Title", with: @product.title
+    fill_in "Title", with: "Ruby remaster"
     click_on "Create Product"
 
-    assert_text "Product was successfully created"
-    click_on "Back"
+    assert_text "Product was successfully created."
+    click_on "Back to products"
   end
 
   test "should update Product" do
@@ -34,14 +34,16 @@ class ProductsTest < ApplicationSystemTestCase
     fill_in "Title", with: @product.title
     click_on "Update Product"
 
-    assert_text "Product was successfully updated"
-    click_on "Back"
+    assert_text "Product was successfully updated."
+    click_on "Back to products"
   end
 
   test "should destroy Product" do
-    visit product_url(@product)
-    click_on "Destroy this product", match: :first
+    visit products_url
+    accept_alert do
+      click_on 'Destroy', match: :first
+    end
 
-    assert_text "Product was successfully destroyed"
+    assert_text "Product was successfully destroyed."
   end
 end
