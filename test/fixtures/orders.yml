@@ -4,10 +4,10 @@ one:
   name: Dave Thomas
   address: Street of example 123
   email: dave@example.org
-  pay_type: Check
+  payment_type: one
 
 two:
   name: Jonh Connor
   address: MyText
   email: free@example.com
-  pay_type: Purchase order
+  payment_type: two

@@ -56,3 +56,5 @@ Product.create!(title: 'Modern CSS with Tailwind',
       </p>},
   image_url: 'tailwind.jpg',
   price: 18.95)
+
+PaymentType.create([{ name: "Check" }, { name: "Credit card" }, { name: "Purchase order" }])

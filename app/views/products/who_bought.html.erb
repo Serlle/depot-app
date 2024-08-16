@@ -1,0 +1,15 @@
+<div class="w-full">
+  <h1 class="text-2xl font-bold mb-4">Who bought <em><%= @product.title %></em></h1>
+
+  <% if @product.orders && @latest_order %>
+    <div class="mb-8 p-4 border rounded-lg bg-gray-50">
+      <%= render 'latest_order' %>
+    </div>
+
+    <h2 class="text-xl font-semibold mb-2">Orders</h2>
+    <%= render @product.orders, locals: { order: @order } %>
+    
+  <% else %>
+    <p>No orders found for this product.</p>
+  <% end %>
+</div>

@@ -8,3 +8,7 @@
     px-3 py-2 mt-2 w-full
   }
 }
+
+.disabled-button {
+  pointer-events: none;
+}
