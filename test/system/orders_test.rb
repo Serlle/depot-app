@@ -11,6 +11,8 @@ class OrdersTest < ApplicationSystemTestCase
   end
 
   test "should create order" do
+    @payment_type = payment_types(:two)
+
     visit store_index_url
     click_on "Add to Cart", match: :first
     click_on "Checkout"
@@ -18,7 +20,7 @@ class OrdersTest < ApplicationSystemTestCase
     fill_in "Address", with: "123 Main Street"
     fill_in "Email", with: @order.email
     fill_in "Name", with: @order.name
-    select @order.pay_type, from: 'Pay type'
+    select @payment_type.name, from: "Payment Type"
     click_on "Place Order"
 
     assert_text "Thank you for your order."

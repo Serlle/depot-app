@@ -1,27 +1,38 @@
 <div id="<%= dom_id order %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= order.name %>
-  </p>
+  <div class="mb-8 p-4 border rounded-lg bg-gray-50">
+    <h2 class="text-xl font-semibold mb-2">Order <%= order.id %></h2>
+    <p class="mb-4">Shipped to: <%= order.address %></p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Address:</strong>
-    <%= order.address %>
-  </p>
+    <table class="table-auto w-full text-left mb-4">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2">Product</th>
+          <th class="px-4 py-2">Quantity</th>
+          <th class="px-4 py-2">Total Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% order.line_items.each do |item| %>
+          <tr>
+            <td class="border px-4 py-2"><%= item.product.title %></td>
+            <td class="border px-4 py-2"><%= item.quantity %></td>
+            <td class="border px-4 py-2"><%= number_to_currency item.total_price %></td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="border px-4 py-2 font-bold">Total</td>
+          <td class="border px-4 py-2"></td>
+          <td class="border px-4 py-2 font-bold"><%= number_to_currency order.line_items.map(&:total_price).sum %></td>
+        </tr>
+      </tbody>
+    </table>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Email:</strong>
-    <%= order.email %>
-  </p>
+    <p class="text-lg pb-3">Paid by: <%= order.payment_type.name %></p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Pay type:</strong>
-    <%= order.pay_type %>
-  </p>
-
-  <% if action_name != "show" %>
-    <%= link_to "Show this order", order, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Edit this order", edit_order_path(order), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
+    <% if action_name != "show" %>
+      <%= link_to "Show this order", order, class: "rounded-lg py-3 px-5 bg-green-100 inline-block font-medium" %>
+      <%= link_to "Edit this order", edit_order_path(order), class: "rounded-lg py-3 ml-2 px-5 bg-green-100 inline-block font-medium" %>
+      <hr class="mt-6">
+    <% end %>
+  </div>
 </div>

@@ -15,9 +15,9 @@
   </table>
 
   <div class="flex mt-1">
-  <%= button_to "Empty Cart", cart, method: :delete, 
-    class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
-  <%= button_to "Checkout", new_order_path, method: :get, 
-    class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
+    <%= button_to "Empty Cart", cart, method: :delete, 
+      class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600" %>
+    <%= button_to "Checkout", new_order_path, method: :get, 
+      class: "ml-4 rounded-lg py-1 px-2 text-white bg-green-600 #{ controller_name == 'orders' ? 'opacity-50 cursor-not-allowed disabled-button' : '' }" %>
   </div>
 </div>

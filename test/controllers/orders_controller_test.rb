@@ -25,10 +25,22 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create order" do
+    @cart_id = carts(:one).id
+    @payment_type_id = payment_types(:two).id
+
+    post line_items_url, params: { product_id: products(:ruby).id, cart_id: @cart_id }
+    follow_redirect!
+    get new_order_url
+
     assert_difference("Order.count") do
-      post orders_url, params: { order: { address: @order.address,
-         email: @order.email, name: @order.name, 
-         pay_type: @order.pay_type } }
+      post orders_url, params: { 
+        order: { 
+          name: @order.name,
+          address: @order.address,
+          email: @order.email, 
+          payment_type_id: @payment_type_id
+        }
+      }
     end
 
     assert_redirected_to store_index_url
@@ -50,7 +62,7 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
         address: @order.address, 
         email: @order.email, 
         name: @order.name, 
-        pay_type: @order.pay_type 
+        payment_type: @order.payment_type.name 
       } 
     }
     assert_redirected_to order_url(@order)
