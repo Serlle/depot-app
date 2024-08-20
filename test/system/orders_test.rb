@@ -1,35 +1,39 @@
 require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
-  setup do
-    @order = orders(:one)
-  end
-
-  test "visiting the index" do
-    visit orders_url
-    assert_selector "h1", text: "Orders"
-  end
-
-  test "should create order" do
-    @payment_type = payment_types(:two)
-
+  test "check dynamic fields" do
     visit store_index_url
-    click_on "Add to Cart", match: :first
-    click_on "Checkout"
+    click_on 'Add to Cart', match: :first
+    click_on 'Checkout'
 
-    fill_in "Address", with: "123 Main Street"
-    fill_in "Email", with: @order.email
-    fill_in "Name", with: @order.name
-    select @payment_type.name, from: "Payment Type"
-    click_on "Place Order"
+    assert has_no_field? 'Routing number'
+    assert has_no_field? 'Account number'
+    assert has_no_field? 'Credit card number'
+    assert has_no_field? 'Expiration date'
+    assert has_no_field? 'Po number'
 
-    assert_text "Thank you for your order."
-  end
+    select 'Check', from: 'Payment Type'
 
-  test "should destroy Order" do
-    visit order_url(@order)
-    click_on "Destroy this order", match: :first
+    assert has_field? 'Routing number'
+    assert has_field? 'Account number'
+    assert has_no_field? 'Credit card number'
+    assert has_no_field? 'Expiration date'
+    assert has_no_field? 'Po number'
 
-    assert_text "Order was successfully destroyed"
+    select 'Credit card', from: 'Payment Type'
+
+    assert has_no_field? 'Routing number'
+    assert has_no_field? 'Account number'
+    assert has_field? 'Credit card number'
+    assert has_field? 'Expiration date'
+    assert has_no_field? 'Po number'
+
+    select 'Purchase order', from: 'Payment Type'
+
+    assert has_no_field? 'Routing number'
+    assert has_no_field? 'Account number'
+    assert has_no_field? 'Credit card number'
+    assert has_no_field? 'Expiration date'
+    assert has_field? 'Po number'
   end
 end
