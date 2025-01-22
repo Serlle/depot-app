@@ -16,11 +16,11 @@
       <%= number_to_currency(line_item.total_price) %>
     </td>
 
-    <% if controller_path == 'store' %>
-      <td class="remove-item"> 
-        <%= button_to "Remove Item", line_item, method: :delete, 
-          class: "ml-4 rounded-lg py-1 px-2 text-white text-sm bg-green-600" %>
-      </td>
-    <% end %>
+    <%# if controller_path == 'store' %>
+    <td class="remove-item"> 
+      <%= button_to "Remove Item", line_item, method: :delete, 
+        class: "ml-4 rounded-lg py-1 px-2 text-white text-sm bg-green-600" %>
+    </td>
+    <%# end %>
   </tr>
 </div>

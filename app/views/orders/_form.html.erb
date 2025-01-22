@@ -28,7 +28,7 @@
 
   <div data-controller="payment">
     <div class="my-5">
-      <%= form.label :payment_type_id, "Payment Type" %>
+      <%= form.label :payment_type_id, "Pay Type" %>
       <%= form.collection_select :payment_type_id, PaymentType.all, :id, :name, 
                                  { prompt: "Select a payment method" },  
                                  'data-payment-target' => 'selection',
