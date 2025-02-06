@@ -57,15 +57,24 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update order" do
+    new_ship_date = Time.zone.now + 10.days
     patch order_url(@order), params: { 
       order: { 
         address: @order.address, 
         email: @order.email, 
         name: @order.name, 
-        payment_type: @order.payment_type.name 
-      } 
+        payment_type: @order.payment_type_id,
+        ship_date: new_ship_date
+      }
     }
     assert_redirected_to order_url(@order)
+    @order.reload
+    assert_equal new_ship_date.to_i, @order.ship_date.to_i
+
+    # Chek that the email was sent
+    assert_enqueued_emails 1 do
+      OrderMailer.ship_date_updated(@order).deliver_later
+    end
   end
 
   test "should destroy order" do

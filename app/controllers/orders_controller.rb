@@ -42,7 +42,10 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1 or /orders/1.json
   def update
     respond_to do |format|
-      if @order.update(order_params)
+      old_ship_date = @order.ship_date
+
+      if @order.update(order_update_params)
+        OrderMailer.ship_date_updated(@order).deliver_later if old_ship_date != @order.ship_date
         format.html { redirect_to order_url(@order), notice: 'Order was successfully updated.' }
         format.json { render :show, status: :ok, location: @order }
       else
@@ -69,6 +72,10 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
+  def ensure_cart_isnt_empty
+    redirect_to store_index_url, notice: 'Your cart is empty' if @cart.line_items.empty?
+  end
+
   # Only allow a list of trusted parameters through.
   def order_params
     params.require(:order).permit(:name, :address, :email, :payment_type_id)
@@ -88,7 +95,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def ensure_cart_isnt_empty
-    redirect_to store_index_url, notice: 'Your cart is empty' if @cart.line_items.empty?
+  def order_update_params
+    order_params.merge(params.require(:order).permit(:ship_date))
   end
 end

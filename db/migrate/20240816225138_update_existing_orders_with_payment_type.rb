@@ -9,6 +9,8 @@ class UpdateExistingOrdersWithPaymentType < ActiveRecord::Migration[7.0]
     # }
 
     if column_exists?(:orders, :pay_type)
+      PaymentType.create([{ name: "Check" }, { name: "Credit card" }, { name: "Purchase order" }]) if PaymentType.count.zero?
+
       pay_type_mapping = {
         0 => PaymentType.find_by(name: 'Check').id,
         1 => PaymentType.find_by(name: 'Credit card').id,
@@ -23,7 +25,7 @@ class UpdateExistingOrdersWithPaymentType < ActiveRecord::Migration[7.0]
     end
   end
 
-  # def down
-  #   Order.update_all(payment_type_id: nil)
-  # end
+  def down
+    Order.update_all(payment_type_id: nil)
+  end
 end
